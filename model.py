@@ -115,6 +115,7 @@ def fit_model(sine, triplets, delta, batch_size, epochs, alpha,
               lr=0.4, weight_decay=0.0, print_loss=True):
     optimizer = optim.Adagrad(sine.parameters(), lr=lr,
                               weight_decay=weight_decay)
+    min_loss = 100
     for epoch in range(epochs):
         sine.zero_grad()
         xi, xj, xk = get_training_batch(triplets, batch_size)
@@ -126,5 +127,9 @@ def fit_model(sine, triplets, delta, batch_size, epochs, alpha,
         loss.backward()
         optimizer.step()
         if print_loss:
-            print('Loss at epoch ', epoch + 1, ' is ', loss.data[0])
+            if min_loss > float(loss):
+                min_loss = float(loss)
+            print('Loss at epoch ', epoch + 1, ' is ', float(loss))
+
+    print('Min loss = ', min_loss)
     return sine
