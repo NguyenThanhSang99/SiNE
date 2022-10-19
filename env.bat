@@ -1,0 +1,1 @@
+call SiNE/Scripts/activate.bat
